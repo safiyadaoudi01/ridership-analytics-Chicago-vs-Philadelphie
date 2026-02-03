@@ -40,7 +40,7 @@ Cloner le repository :
 
 ```bash
 git clone https://github.com/safiyadaoudi01/ridership-analytics-Chicago-vs-Philadelphie.git
-cd ridership-analytics
+cd ridership-analytics-Chicago-vs-Philadelphie
 ```
 Installer les dépendances Python :
 
