@@ -39,8 +39,8 @@ L’objectif est de construire un dashboard Power BI interactif permettant de :
 Cloner le repository :
 
 ```bash
-git clone https://github.com/<username>/ridership-analytics.git
-cd ridership-analytics
+git clone https://github.com/safiyadaoudi01/ridership-analytics-Chicago-vs-Philadelphie.git
+cd ridership-analytics-Chicago-vs-Philadelphie
 ```
 Installer les dépendances Python :
 
