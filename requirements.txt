@@ -2,3 +2,4 @@ rdflib
 numpy
 pandas
 requests
+openpyxl
