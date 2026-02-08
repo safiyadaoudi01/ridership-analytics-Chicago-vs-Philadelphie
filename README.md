@@ -1,40 +1,44 @@
 # Ridership Analytics – Chicago vs Philadelphie
 
-### Description du projet
-Ce projet vise à analyser et comparer la fréquentation des transports urbains à Chicago et Philadelphie, en combinant :
-- données historiques (mensuelles / journalières)
-- données temps réel (fréquence, ponctualité des lignes)
+## Description du projet
+Ce projet vise à analyser et comparer la fréquentation des transports urbains à Chicago et Philadelphie.
 
 L’objectif est de construire un dashboard Power BI interactif permettant de :
-- suivre l’évolution du ridership par ligne et type de jour,
-- comparer les performances entre les deux villes,
-- détecter les anomalies entre valeurs observées et valeurs prédites à partir des données historiques et temps réel,
-- fournir des recommandations stratégiques pour optimiser les services.
+- Suivre l’évolution du ridership par **route** et par **mode de transport** (Bus / Rail)
+- Comparer les performances entre les deux villes
+- Fournir des recommandations stratégiques pour optimiser les services
 
-### Objectifs spécifiques
-- Importer et nettoyer les données hétérogènes (RDF, CSV, APIs temps réel).
+## Objectifs spécifiques
+- Importer et nettoyer les données hétérogènes (RDF, CSV, Excel).
 - Construire un modèle en étoile pour l’analyse dans Power BI.
-- Calculer des KPIs avancés via DAX (ex. MoM, volatilité, indice de performance).
-- Réaliser des analyses statistiques avec Python (test t, ANOVA, corrélation).
-- Développer un dashboard Power BI interactif (3 pages principales).
+- Calculer des KPIs avancés via DAX, par exemple :
+  - Croissance mensuelle (MoM Growth %)
+  - % de différence de ridership entre villes
+  - Moyenne et somme du ridership par route et par mode
+- Développer un dashboard Power BI interactif avec deux pages principales :
+  - Route Analysis
+  - Mode Analysis
 
-### Structure du repository
+## Structure du repository
 ```
 ├── data/
-│   ├── chicago_rdf/           # Données historiques RDF de Chicago
-│   ├── philadelphia_csv/      # Données historiques CSV de Philadelphie
-│   ├── api_data/              # Données temps réel (CTA / SEPTA)
+|   ├── chicago_csv/           # CSV généré après transformation des RDF (routes)
+|   ├── chicago_excel/         # Données modes de transport pour Chicago
+│   ├── chicago_rdf/           # Données brutes RDF de Chicago par route (19 fichiers)
+│   ├── philadelphia_csv/      # Données routes et modes de Philadelphie (CSV)
+│   ├── processed/             # CSV finaux prêts à l’analyse
 ├── notebooks/
 │   ├── etl_preparation.ipynb  # Nettoyage et transformation des données
-│   ├── stats_analysis.ipynb   # Analyses statistiques Python
 ├── powerbi/
-│   ├── ridership_analytics.pbix         # Fichier Power BI
+│   ├── ridership_analytics_chicago-vs-philadelphia.pbix
 ├── scripts/
-│   ├── rdf_to_csv.py          # Script Python pour convertir RDF → CSV
+│   ├── rdf_to_csv.py          # Script Python pour convertir RDF → CSV (Chicago)
+├── slides/
+│   ├── Urban_Mobility_Chicago_Philadelphia_Comparison.pdf
 ├── README.md                  # Ce fichier
 └── requirements.txt           # Librairies Python nécessaires
 ```
-### Installation et configuration
+## Installation et configuration
 
 Cloner le repository :
 
@@ -50,10 +54,9 @@ pip install -r requirements.txt
 Préparer les données :
 - Placer les fichiers RDF/CSV dans le dossier data/.
 - Exécuter rdf_to_csv.py pour convertir les fichiers RDF de Chicago.
-- Vérifier les clés API pour les flux temps réel (CTA / SEPTA) et les ajouter dans api_data/.
-- Ouvrir le dashboard Power BI (ridership_analytics.pbix) et connecter les données traitées.
+- Ouvrir le dashboard Power BI (ridership_analytics_chicago-vs-philadelphia.pbix) et connecter les données traitées.
 
-### Contenu du projet
+## Contenu du projet
 
 **ETL / Python** : préparation, nettoyage, harmonisation des données.
 
@@ -61,25 +64,44 @@ Préparer les données :
 
 **KPIs DAX** : croissance mensuelle, indice de performance, pourcentage de jours au-dessus de l’objectif, volatilité.
 
-**Statistiques Python** : test t, ANOVA, Shapiro-Wilk, corrélations.
+**Dashboard Power BI** : 2 pages interactives avec filtres, comparaisons et visualisations statistiques.
 
-**Dashboard Power BI** : 3 pages interactives avec filtres, comparaisons et visualisations statistiques.
 
- ### Résultats attendus
-- Comparaison des performances entre Chicago et Philadelphie.
-- Identification des anomalies et des écarts entre valeurs observées et prédites.
-- Recommandations stratégiques pour l’optimisation des services de transport.
-
-### Technologies utilisées
+## Technologies utilisées
 
 **Python :** Pandas, NumPy, SciPy, Matplotlib/Seaborn
 
 **Power BI :** Dashboard interactif, DAX, modèle en étoile
 
-**APIs :** CTA Bus Tracker, SEPTA TransitView
+**Formats :** CSV, RDF, EXCEL
 
-**Formats :** CSV, RDF, JSON
+## Dashboard Power BI – Visualisations
 
-### 🔗 Liens utiles
+Cette section présente les écrans du dashboard développés pour l’analyse du ridership à Chicago et Philadelphie.
 
-[CTA Bus Tracker API](https://www.transitchicago.com/developers/bustracker/)
+### Page Route Analysis
+Visualisations :
+
+| Visual               | Description                                                                                                                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cartes KPI           | - Volume total de passagers – Chicago<br>- Volume total de passagers – Philadelphie<br>- % différence ridership (réf Philadelphie)<br>- % différence ridership (réf Chicago)<br>- Nombre total de routes |
+| Graphique en courbes | Axe X : Date, Axe Y : MoM Growth %, Légende : City. Suivi de la croissance mensuelle par ville.                                                                                                          |
+| Histogramme empilé   | Axe X : Route, Axe Y : Moyenne de avg_ridership, Légende : City. Comparaison directe des routes les plus fréquentées.                                                                                    |
+
+Screenshot suggéré :
+![page_route_analysis](https://github.com/user-attachments/assets/02136db7-192d-4e21-b818-f698a9efbbdc)
+
+### Page Mode Analysis
+Visualisations :
+
+| Visual                 | Description                                                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------------- |
+| Cartes KPI             | Moyenne de avg_ridership – Chicago<br>Moyenne de avg_ridership – Philadelphie (filtrées par mode)   |
+| Graphiques en secteurs | Répartition du ridership par mode pour chaque ville (Somme de avg_ridership), avec filtre par année |
+| Graphique en aires     | Axe X : Date, Axe Y : Somme de avg_ridership Chicago et Philadelphie, filtres : année et mode       |
+| Histogramme groupé     | Axe X : Mode, Axe Y : Somme de avg_ridership par ville, filtre : année                              |
+
+Screenshot suggéré :
+
+![page_mode_analysis](https://github.com/user-attachments/assets/7004b979-5353-4ecc-a171-bb0e92889309)
+
